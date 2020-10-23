@@ -4,7 +4,7 @@ steps:
   dir: 'Docker/geomx-dnd'
   args: ['build', '-t', 'gcr.io/aryeelab/geomx-dnd:$SHORT_SHA', '-t', 'gcr.io/aryeelab/geomx-dnd:latest', '--build-arg', 'VERSION=$SHORT_SHA', '.']
 
-- name: 'gcr.io/cloud-builders/wget'
+- name: 'bash'
   id: test-wdl
   args: ['echo', 'Testing', 'WDL']
   waitFor:
