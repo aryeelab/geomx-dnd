@@ -1,6 +1,14 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
+  id: build-docker
   dir: 'Docker/geomx-dnd'
   args: ['build', '-t', 'gcr.io/aryeelab/geomx-dnd:$SHORT_SHA', '-t', 'gcr.io/aryeelab/geomx-dnd:latest', '--build-arg', 'VERSION=$SHORT_SHA', '.']
+
+- name: 'gcr.io/cloud-builders/wget'
+  id: test-wdl
+  args: ['echo', 'Testing', 'WDL']
+  waitFor:
+  - build-docker
+
 images: ['gcr.io/aryeelab/geomx-dnd']
 timeout: 3600s
