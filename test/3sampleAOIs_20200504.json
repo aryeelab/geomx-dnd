@@ -1,0 +1,8 @@
+{
+  "preprocess_geomx_dnd.fastq_zip": "FASTQ.zip",
+  "preprocess_geomx_dnd.config_ini": "3sampleAOIs_20200504_DND_config.ini",
+  "preprocess_geomx_dnd.monitoring_script": "https://storage.googleapis.com/aryeelab/scripts/monitor_v2.sh",
+  "preprocess_geomx_dnd.run_id": "20200504",
+  "preprocess_geomx_dnd.version": "dev"
+}
+
