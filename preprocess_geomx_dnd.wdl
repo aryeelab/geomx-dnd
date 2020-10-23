@@ -1,4 +1,4 @@
-workflow preprocess_geomx_ngs {
+workflow preprocess_geomx_dnd {
 
     String version = "dev"
     #File monitoring_script = "gs://aryeelab/scripts/monitor_v2.sh"
