@@ -1,0 +1,6 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  dir: 'Docker/geomx-ngs'
+  args: ['build', '-t', 'gcr.io/aryeelab/geomx-ngs:$SHORT_SHA', '-t', 'gcr.io/aryeelab/geomx-ngs:latest', '--build-arg', 'VERSION=$SHORT_SHA', '.']
+images: ['gcr.io/aryeelab/geomx-ngs']
+timeout: 3600s

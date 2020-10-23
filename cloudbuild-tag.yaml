@@ -1,0 +1,6 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  dir: 'Docker/geomx-dnd'
+  args: ['build', '-t', 'gcr.io/aryeelab/geomx-dnd:$TAG_NAME', '-t', 'gcr.io/aryeelab/geomx-dnd:latest', '--build-arg', 'VERSION=$TAG_NAME', '.']
+images: ['gcr.io/aryeelab/geomx-dnd']
+timeout: 3600s
