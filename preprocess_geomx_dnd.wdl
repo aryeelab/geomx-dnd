@@ -6,8 +6,6 @@ workflow preprocess_geomx_dnd {
 	# release pipeline versions use images tagged with the version number itself
 	String image_id = sub(version, "dev", "latest")
 	
-    #File monitoring_script = "gs://aryeelab/scripts/monitor_v2.sh"
-    File monitoring_script = "monitor_v2.sh"
     String run_id
     File fastq_zip
     File config_ini
@@ -19,8 +17,7 @@ workflow preprocess_geomx_dnd {
                         run_id = run_id, 
                     	fastq_zip = fastq_zip,
                     	config_ini = config_ini, 
-                        disk_size = disk_size,
-                        monitoring_script = monitoring_script}
+                        disk_size = disk_size}
 
     #call sample_sheet {input: image_id = image_id,
     #                          run_id = run_id,
@@ -50,11 +47,9 @@ task dnd {
 	File fastq_zip
     File config_ini
     Int disk_size
-    File monitoring_script
 
 	command <<<
-    	chmod u+x ${monitoring_script}
-        ${monitoring_script} > monitoring.log &
+        monitor_v2.sh > monitoring.log &
 	
 	    extension=`echo ${fastq_zip} | sed 's/.*\.//'`
 	    if [ $extension == "zip" ]
