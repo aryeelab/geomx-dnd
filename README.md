@@ -18,7 +18,7 @@ gcloud auth configure-docker
 
 ```bash
 cd test
-cromwell run -i oneseq_processing.inputs.BE3_small_test.json oneseq_processing.wdl 
+cromwell run -i 3sampleAOIs_20200504.json ../preprocess_geomx_dnd.wdl 
 ```
 
 
@@ -33,7 +33,7 @@ docker build -t gcr.io/aryeelab/geomx-dnd .
 
 If it works as expected you can commit the change to git repo. Pushing to github 
 will trigger a new container build using [Google Cloud Build](https://cloud.google.com/cloud-build). 
-The new image is automatically stored in Google Container Registry. You can 
+The new image is automatically stored in Google Container Registry.  
 
 ```bash
 
