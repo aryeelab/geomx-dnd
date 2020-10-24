@@ -1,6 +1,11 @@
 workflow preprocess_geomx_dnd {
 
-    String version = "dev"
+	String version = "dev"
+	
+	# 'dev' pipeline versions use the image with the 'latest' tag.
+	# release pipeline versions use images tagged with the version number itself
+	String image_id = sub(version, "dev", "latest")
+	
     #File monitoring_script = "gs://aryeelab/scripts/monitor_v2.sh"
     File monitoring_script = "monitor_v2.sh"
     String run_id
@@ -10,17 +15,23 @@ workflow preprocess_geomx_dnd {
     Int disk_size = ceil(size(fastq_zip, "GB")) * 10 + 20
 
     # Run GeoMx NGS Pipeline (DND)
-    call dnd {input:    run_id = run_id, 
+    call dnd {input:    image_id = image_id,
+                        run_id = run_id, 
                     	fastq_zip = fastq_zip,
                     	config_ini = config_ini, 
                         disk_size = disk_size,
                         monitoring_script = monitoring_script}
 
-    #call sample_sheet {input: run_id = run_id,
-    #						  summary = dnd.dnd_summary,
-    #						  dedup_counts = dnd.dedup_counts,
+    #call sample_sheet {input: image_id = image_id,
+    #                          run_id = run_id,
+    #				 		   summary = dnd.dnd_summary,
+    #						   dedup_counts = dnd.dedup_counts,
     #                          dccs = dnd.dccs,
     #                          version = version}
+
+	call version_info {
+		input: image_id = image_id
+	}
     
     output {
         File dnd_log_zip = dnd.log_zip
@@ -28,12 +39,13 @@ workflow preprocess_geomx_dnd {
         File dcc_zip = dnd.dcc_zip
         File count_table_zip = dnd.count_table_zip
         #File sample_sheet = sample_sheet.sample_sheet
-        String pipeline_version = "${version}"
+        String pipeline_version = version_info.pipeline_version
     }
 
 }
 
 task dnd {
+    String image_id
 	String run_id
 	File fastq_zip
     File config_ini
@@ -61,8 +73,7 @@ task dnd {
         # by creating output under output. We'll use it until we get 
         # access to the v2 (non-docker) DND code and can replace it
         # with a real DND call.
-        wget https://storage.googleapis.com/aryeelab/geomx/Run1DCCs.zip
-        unzip Run1DCCs.zip
+        curl https://storage.googleapis.com/aryeelab/geomx/3sampleAOIs_20200504_DND/Run1DCCs.tar.gz | tar zxv
         mv Run1DCCs output
         
         # Rename DCC zip file
@@ -77,7 +88,7 @@ task dnd {
 
     runtime {
         continueOnReturnCode: false
-        docker: "gcr.io/aryeelab/geomx-dnd"
+        docker: "gcr.io/aryeelab/geomx-dnd:${image_id}"
         bootDiskSizeGb: 20
         disks: "local-disk ${disk_size} HDD"
         zones: "us-central1-c"
@@ -94,3 +105,18 @@ task dnd {
 	
 }
 
+task version_info {
+	String image_id
+	command <<<
+		cat /VERSION
+	>>>
+	runtime {
+            continueOnReturnCode: false
+            docker: "gcr.io/aryeelab/geomx-dnd:${image_id}"
+            cpu: 1
+            memory: "1GB"
+        }
+	output {
+	    String pipeline_version = read_string(stdout())
+        }
+}
