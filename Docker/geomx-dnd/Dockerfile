@@ -5,5 +5,8 @@ RUN apt-get update && apt-get install -y \
     curl \
     zip 
 
+COPY monitor_v2.sh /usr/local/bin/
+
 RUN echo $VERSION > /VERSION
+
 
