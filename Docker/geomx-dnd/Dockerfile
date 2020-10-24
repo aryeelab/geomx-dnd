@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
     zip 
 
 COPY monitor_v2.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/monitor_v2.sh
 
 RUN echo $VERSION > /VERSION
 
