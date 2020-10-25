@@ -14,10 +14,21 @@ gcloud auth configure-docker
 ```
 
 
-### Running a test
+### Process a sample dataset
+These steps download and process a sample dataset from Nanostring. The sample
+inputs are specified in `tests/3sampleAOIs_20200504.json`.
+
 
 ```bash
-cd test
+cd tests
+
+# Get the FASTQs (1Gb)
+wget http://storage.googleapis.com/aryeelab/geomx/3sampleAOIs_20200504_DND/FASTQ.zip
+
+# Get the config ini file:
+wget http://storage.googleapis.com/aryeelab/geomx/3sampleAOIs_20200504_DND/3sampleAOIs_20200504_DND_config.ini
+
+# Run the workflow
 cromwell run -i 3sampleAOIs_20200504.json ../preprocess_geomx_dnd.wdl 
 ```
 
