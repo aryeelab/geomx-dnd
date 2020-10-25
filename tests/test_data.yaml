@@ -1,0 +1,9 @@
+---
+run_id: '123456'
+fastq_zip:
+  url: http://storage.googleapis.com/aryeelab/geomx/3sampleAOIs_20200504_DND/FASTQ.zip
+config_ini:
+  url: http://storage.googleapis.com/aryeelab/geomx/3sampleAOIs_20200504_DND/3sampleAOIs_20200504_DND_config.ini
+dcc_zip:
+  url: http://storage.googleapis.com/aryeelab/geomx/3sampleAOIs_20200504_DND/DCC_files_20200813.zip
+
